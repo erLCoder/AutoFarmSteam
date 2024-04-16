@@ -1,0 +1,2 @@
+steam==1.4.4
+dearpygui==1.10.1
