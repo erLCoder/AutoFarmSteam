@@ -1,39 +1,38 @@
-from steam.client import SteamClient, EResult
+import asyncio
+from steam.client import SteamClient
 
-client = SteamClient()
+accs_file = 'accs.txt'
+from config import games
 
-def get_username():
-    username = str(input("Введите логин: "))
-    get_password(username)
-
-def get_password(username):
-    password = str(input("Введите пароль: "))
-    login_process(username, password)
-
-def login_process(username, password) -> None:
+async def login_process(client, username, password) -> None:
     account_login = client.login(username=username, password=password)
-    games = ['730']
     if account_login == 85:
-        steamguard = str(input("Enter Steam Guard (App): "))
+        steamguard = str(input(f"({username})Enter Steam Guard (App): "))
         client.login(username=username, password=password, two_factor_code=steamguard)
-        print('Script is running!')
-        while True:
-            client.games_played(games)
-            client.run_forever()
     elif account_login == 63:
-        mail = str(input("Enter Steam Guard (Mail): "))
+        mail = str(input(f"({username})Enter Steam Guard (Mail): "))
         client.login(username=username, password=password, auth_code=mail)
-        print('Script is running!')
-        while True:
-            client.games_played(games)
-            client.run_forever()
-    elif account_login == 1:
-        print('Script is running!')
-        while True:
-            client.games_played(games)
-            client.run_forever()
     else:
-        print("An unexpected error occurred!")
+        pass
+
+async def main():
+    clients = []
+    with open(accs_file, 'r') as file:
+        tasks = []
+        for line in file:
+            login, password = line.strip().split(':')
+            client = SteamClient()
+            print(f'Logging in with account: {login}')
+            task = asyncio.create_task(login_process(client, username=login, password=password))
+            tasks.append(task)
+            clients.append(client)
+
+        await asyncio.gather(*tasks)
+
+    for client in clients:
+        client.games_played(games)
+    
+    client.run_forever()
 
 if __name__ == '__main__':
-    get_username()
+    asyncio.run(main())
