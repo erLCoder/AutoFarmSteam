@@ -16,4 +16,21 @@ AutoFarmSteam is a project designed to help manage your bot farm and automate ro
 ## Additional Notes:
 Feel free to customize the script to suit your specific needs. Your feedback and contributions are always welcome to improve AutoFarmSteam for the community.
 
+# How to use
+
+1. Clone the repository 
+```bash 
+git clone https://github.com/erLCoder/AutoFarmSteam.git
+```
+
+2. Install the modules from requirements.txt using pip 
+```bash 
+pip install -r requirements.txt
+```
+
+3. Run the script 
+```bash 
+python start.py
+```
+
 Happy farming! 🌾🤖
