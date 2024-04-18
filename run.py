@@ -1,8 +1,6 @@
 import asyncio
 from steam.client import SteamClient
-
-accs_file = 'accs.txt'
-from config import games
+from settings.config import games, accs_file
 
 async def login_process(client, username, password) -> None:
     account_login = client.login(username=username, password=password)
